@@ -1,7 +1,3 @@
-Here's the corrected README file with the adjustments made:
-
----
-
 # M-Pesa STK Push Integration
 
 This project demonstrates how to integrate Safaricom's M-Pesa STK push functionality into a Node.js application. It includes routes to initiate an STK push, handle callbacks, and confirm payments.
