@@ -1,7 +1,10 @@
 import express from "express";
 import cors from "cors";
 import 'dotenv/config';
+
 import lipaNaMpesaRoutes from "./routes/lipanampesa.js";
+import transactionsRoutes from "./routes/manage.js";
+
 import { accessToken } from "./middlewares/generateAccessToken.js";
 
 // Initialize express
@@ -15,7 +18,7 @@ app.use(cors());
 app.use(accessToken);
 
 // Import routes
-app.use('/api', lipaNaMpesaRoutes);
+app.use('/api', lipaNaMpesaRoutes ,transactionsRoutes);
 
 app.get('/health', (req, res) => {
     res.status(200).send('OK');
