@@ -30,13 +30,13 @@ DB_DIALECT=
 1. Clone the repository:
 
     ```bash
-    git clone <repository-url>
+    git clone (https://github.com/Muga20/Mpesa-with-Expresjs)
     ```
 
 2. Navigate to the project directory:
 
-    ```bash
-    cd <project-directory>
+    ```bash  Mpesa-with-Expresjs
+    cd 
     ```
 
 3. Install the dependencies:
