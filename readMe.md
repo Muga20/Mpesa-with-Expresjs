@@ -1,3 +1,6 @@
+Here's the corrected README file with the adjustments made:
+
+---
 
 # M-Pesa STK Push Integration
 
@@ -21,7 +24,7 @@ PORT=
 DB_NAME=
 DB_USER=
 DB_PASSWORD=
-DB_HOST=l
+DB_HOST=
 DB_DIALECT=
 ```
 
@@ -30,13 +33,13 @@ DB_DIALECT=
 1. Clone the repository:
 
     ```bash
-    git clone (https://github.com/Muga20/Mpesa-with-Expresjs)
+    git clone https://github.com/Muga20/Mpesa-with-Expresjs 
     ```
 
 2. Navigate to the project directory:
 
-    ```bash  Mpesa-with-Expresjs
-    cd 
+    ```bash
+    cd Mpesa-with-Expresjs
     ```
 
 3. Install the dependencies:
@@ -97,10 +100,6 @@ DB_DIALECT=
 - **Ngrok Issues:** If using Ngrok, ensure it is running and the URL is correctly configured in your environment variables or callback URLs.
 - **Token Expiration:** If you encounter issues with token expiration, make sure that your application properly handles token refresh.
 
-## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
----
-
-Feel free to adjust any details according to your project's specific requirements!
+Feel free to update any specific details or adjust the instructions according to your project's needs!
