@@ -1,20 +1,28 @@
 import express from "express";
 import cors from "cors";
-import 'dotenv/config'
-import lipaNaMpesaRoutes from "./routes/lipanampesa.js"
+import 'dotenv/config';
+import lipaNaMpesaRoutes from "./routes/lipanampesa.js";
+import { accessToken } from "./middlewares/generateAccessToken.js";
 
-// initialize express
-const app = express()
+// Initialize express
+const app = express();
 
-// middlewares
-app.use(express.json())
-app.use(cors())
+// Middlewares
+app.use(express.json());
+app.use(cors());
 
-// import routes
-app.use('/api',lipaNaMpesaRoutes)
+// Middleware to set Safaricom access token
+app.use(accessToken);
 
-const port = process.env.PORT
+// Import routes
+app.use('/api', lipaNaMpesaRoutes);
+
+app.get('/health', (req, res) => {
+    res.status(200).send('OK');
+});
+
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
-    console.log(`App listening on port ${port}`)
-})
+    console.log(`App listening on port ${port}`);
+});

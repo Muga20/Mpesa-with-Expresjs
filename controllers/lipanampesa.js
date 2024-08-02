@@ -1,18 +1,18 @@
-import axios from "axios";
+import axios from 'axios';
 import 'dotenv/config';
 import StkRequest from '../model/stkRequest.js';
+import axiosRetry from 'axios-retry';
 
+axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
 
-// @desc initiate stk push
+// @desc Initiate STK push
 // @method POST
 // @route /stkPush
-// @access public
+// @access Public
 export const initiateSTKPush = async (req, res) => {
     try {
         const { amount, phone, Order_ID } = req.body;
-
-        const auth = "Bearer " + req.safaricom_access_token
-
+        const auth = "Bearer " + req.safaricom_access_token;
         const timestamp = new Date().toISOString().replace(/[^0-9]/g, '').slice(0, -3);
         const shortCode = process.env.BUSINESS_SHORT_CODE;
         const passKey = process.env.PASS_KEY;
@@ -39,7 +39,6 @@ export const initiateSTKPush = async (req, res) => {
             }
         });
 
-        // Save initial payment details in MySQL
         await StkRequest.create({
             phone,
             amount,
@@ -53,22 +52,18 @@ export const initiateSTKPush = async (req, res) => {
         res.status(200).json({ ...response.data });
 
     } catch (error) {
-        console.error('Error simulating STK push:', error);
-        res.status(500).send('Failed to simulate STK push');
+        console.error('Error initiating STK push:', error);
+        res.status(500).send('Failed to initiate STK push');
     }
 };
 
-
-// @desc callback route Safaricom will post transaction status
+// @desc Callback route Safaricom will post transaction status
 // @method POST
 // @route /stkPushCallback/:Order_ID
-// @access public
+// @access Public
 export const stkPushCallback = async (req, res) => {
     try {
-        // order id
         const { Order_ID } = req.params;
-
-        // callback details
         const {
             MerchantRequestID,
             CheckoutRequestID,
@@ -80,23 +75,18 @@ export const stkPushCallback = async (req, res) => {
         console.log(req.body.Body.stkCallback);
 
         if (ResultCode === 1032) {
-            // User canceled the request
             await StkRequest.update(
                 { status: 'canceled' },
                 { where: { CheckoutRequestID } }
             );
-
             console.log(`Request with CheckoutRequestID: ${CheckoutRequestID} was canceled by user.`);
-
             res.json({ message: 'Request canceled by user' });
             return;
         } else if (ResultCode === 0) {
-            // Transaction was successful
             if (!CallbackMetadata || !CallbackMetadata.Item) {
                 throw new Error('CallbackMetadata or Item is undefined');
             }
 
-            // get the meta data from the meta
             const meta = Object.values(await CallbackMetadata.Item);
             const PhoneNumber = meta.find(o => o.Name === 'PhoneNumber')?.Value?.toString();
             const Amount = meta.find(o => o.Name === 'Amount')?.Value?.toString();
@@ -135,17 +125,15 @@ export const stkPushCallback = async (req, res) => {
 
             res.json(true);
         } else {
-            // Handle other ResultCodes
             await StkRequest.update(
                 { status: 'failed' },
                 { where: { CheckoutRequestID } }
             );
-
             console.log(`Request with CheckoutRequestID: ${CheckoutRequestID} failed with ResultCode: ${ResultCode}`);
             res.json({ message: `Request failed with ResultCode: ${ResultCode}` });
         }
     } catch (e) {
-        console.error("Error while trying to update LipaNaMpesa details from the callback", e);
+        console.error("Error while updating LipaNaMpesa details from the callback", e);
         res.status(503).send({
             message: "Something went wrong with the callback",
             error: e.message
@@ -153,21 +141,15 @@ export const stkPushCallback = async (req, res) => {
     }
 };
 
-
-
-// @desc Check from safaricom servers the status of a transaction
+// @desc Check from Safaricom servers the status of a transaction
 // @method GET
 // @route /confirmPayment/:CheckoutRequestID
-// @access public
+// @access Public
 export const confirmPayment = async (req, res) => {
     try {
         const url = "https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query";
-        
         const auth = "Bearer " + req.safaricom_access_token;
-
         const timestamp = new Date().toISOString().replace(/[^0-9]/g, '').slice(0, -3);
-
-        //shortcode + passkey + timestamp
         const password = Buffer.from(process.env.BUSINESS_SHORT_CODE + process.env.PASS_KEY + timestamp).toString('base64');
 
         const payload = {
@@ -190,12 +172,10 @@ export const confirmPayment = async (req, res) => {
         res.status(200).json(response.data);
 
     } catch (e) {
-        console.error("Error while trying to create LipaNaMpesa details", e);
+        console.error("Error while confirming LipaNaMpesa details", e);
         res.status(503).send({
-            message: "Something went wrong while trying to create LipaNaMpesa details. Contact admin",
+            message: "Something went wrong while confirming LipaNaMpesa details. Contact admin",
             error: e.message
         });
     }
 };
-
-
