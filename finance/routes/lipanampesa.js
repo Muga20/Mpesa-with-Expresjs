@@ -1,6 +1,6 @@
-import express from 'express';
-import { initiateSTKPush, stkPushCallback, confirmPayment } from '../controllers/lipanampesa.js';
-import { validatePaymentInput } from '../middlewares/validatePaymentInput.js'
+const express = require('express');
+const { initiateSTKPush, stkPushCallback, confirmPayment } = require('../controllers/lipanampesa.js');
+const { validatePaymentInput } = require('../middlewares/validatePaymentInput.js');
 
 
 const router = express.Router();

@@ -1,11 +1,10 @@
-import express from "express";
-import cors from "cors";
-import 'dotenv/config';
+const express = require('express');
+const cors = require('cors');
+require('dotenv').config();
 
-import lipaNaMpesaRoutes from "./routes/lipanampesa.js";
-import transactionsRoutes from "./routes/manage.js";
-
-import { accessToken } from "./middlewares/generateAccessToken.js";
+const lipaNaMpesaRoutes = require('./finance/routes/lipanampesa.js');
+const transactionsRoutes = require('./finance/routes/manage.js');
+const { accessToken } = require('./finance/middlewares/generateAccessToken.js');
 
 // Initialize express
 const app = express();

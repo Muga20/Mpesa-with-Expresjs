@@ -1,6 +1,5 @@
-import StkRequest from '../model/stkRequest.js';
-import { Op } from 'sequelize'; // Import Op for Sequelize operators
-
+const StkRequest = require('../model/stkRequest.js');
+const { Op } = require('sequelize');
 
 // Controller to get transactions made today and by status
 export const getTransactions = async (req, res) => {

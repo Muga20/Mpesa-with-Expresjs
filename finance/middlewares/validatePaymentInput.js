@@ -1,4 +1,4 @@
-import { body, validationResult } from 'express-validator';
+const { body, validationResult } =require ('express-validator');
 
 // Middleware for validation
 export const validatePaymentInput = [

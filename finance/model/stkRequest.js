@@ -1,5 +1,5 @@
-import { DataTypes }  from "sequelize";
-import  db  from '../config/config.js';
+const { DataTypes } =require ("sequelize");
+const  db  =require ('../config/config.js');
 
 const StkRequest = db.define(
   'StkRequest',

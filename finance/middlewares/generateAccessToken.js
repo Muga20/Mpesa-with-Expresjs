@@ -1,5 +1,6 @@
-import request from "request";
-import 'dotenv/config';
+const request = require('request');
+require('dotenv').config();
+
 
 let cachedToken = null;
 let tokenExpirationTime = null;

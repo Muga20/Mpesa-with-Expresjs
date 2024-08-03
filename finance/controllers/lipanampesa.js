@@ -1,7 +1,8 @@
-import axios from 'axios';
-import 'dotenv/config';
-import StkRequest from '../model/stkRequest.js';
-import axiosRetry from 'axios-retry';
+const axios = require('axios');
+require('dotenv').config();
+const StkRequest = require('../model/stkRequest.js');
+const axiosRetry = require('axios-retry');
+
 
 axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay });
 
